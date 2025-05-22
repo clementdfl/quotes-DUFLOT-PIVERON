@@ -157,6 +157,3 @@ void bmp24_brightness(t_bmp24 *img, int value) {
         }
     }
 }
-//
-// Created by piver on 27/04/2025.
-//

@@ -61,7 +61,7 @@ void bmp8_saveImage(const char *filename, t_bmp8 *img) {
     fclose(file);
 }
 
-// Fonction pour libérer une image
+
 void bmp8_free(t_bmp8 *img) {
     if (img) {
         if (img->data) {
