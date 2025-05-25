@@ -38,7 +38,7 @@ void menu_bmp8() {
         printf("\n--- IMAGE 8 BITS ---\n");
         printf("1. Ouvrir une image\n");
         printf("2. Sauvegarder l'image\n");
-        printf("3. Appliquer filtre négatif\n");
+        printf("3. Appliquer filtre negatif\n");
         printf("4. Modifier luminosite\n");
         printf("5. Afficher infos\n");
         printf("6. Egalisation d'histogramme\n");
