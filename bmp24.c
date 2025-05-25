@@ -1,11 +1,15 @@
+//Ce fichier bmp24.c contient l’implémentation des fonctions pour manipuler une image BMP en couleur (24 bits). Il complète les déclarations présentes dans bmp24.h.
+// Ce fichier a été crée par Clément Duflot
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <math.h>
+#include <math.h> //On inclut de module pour les fonctions round(), fmin() et fmax()
 #include "bmp24.h"
 
-t_bmp24 *bmp24_loadImage(const char *filename) {
+t_bmp24 *bmp24_loadImage(const char *filename) { //Fonction pour charger une image
     FILE *file = fopen(filename, "rb");
     if (!file) {
         perror("Erreur ouverture image");
@@ -22,7 +26,7 @@ t_bmp24 *bmp24_loadImage(const char *filename) {
     // Vérifier profondeur
 
     if (header_info.bits != 24) {
-        printf("Erreur : image non 24 bits !\n");
+        printf("Erreur : image non 24 bits !\n"); // On regarde si l'image chargée est bien une image 24 bits sinon on renvoie cette erreur
         fclose(file);
         return NULL;
     }
@@ -58,7 +62,7 @@ t_bmp24 *bmp24_loadImage(const char *filename) {
 
 
 
-void bmp24_saveImage(t_bmp24 *img, const char *filename) {
+void bmp24_saveImage(t_bmp24 *img, const char *filename) { //Fonction pour sauvegarder l'image flowers_color
     FILE *file = fopen(filename, "wb");
     if (!file) {
         perror("Erreur sauvegarde");
@@ -92,7 +96,7 @@ void bmp24_saveImage(t_bmp24 *img, const char *filename) {
 
 
 
-t_pixel **bmp24_allocateDataPixels(int width, int height) {
+t_pixel **bmp24_allocateDataPixels(int width, int height) { // Cette fonction sert à allouer dynamiquement la mémoire nécessaire pour stocker les pixels d’une image BMP 24 bits
     t_pixel **pixels = malloc(height * sizeof(t_pixel *));
     if (!pixels) return NULL;
 
@@ -107,14 +111,14 @@ t_pixel **bmp24_allocateDataPixels(int width, int height) {
     return pixels;
 }
 
-void bmp24_freeDataPixels(t_pixel **pixels, int height) {
+void bmp24_freeDataPixels(t_pixel **pixels, int height) { // Cette fonction sert à libérer la mémoire allouée par la fonction
     for (int i = 0; i < height; i++) {
         free(pixels[i]);
     }
     free(pixels);
 }
 
-t_bmp24 *bmp24_allocate(int width, int height, int colorDepth) {
+t_bmp24 *bmp24_allocate(int width, int height, int colorDepth) { // Cette fonction sert à créer une nouvelle structure d’image BMP 24 bits en mémoire avec la longueur, la largeur et la "profondeur de couleur" (colorDepth)
     t_bmp24 *img = malloc(sizeof(t_bmp24));
     if (!img) return NULL;
 
@@ -137,7 +141,7 @@ void bmp24_free(t_bmp24 *img) {
     }
 }
 
-void bmp24_negative(t_bmp24 *img) {
+void bmp24_negative(t_bmp24 *img) { // Application du filtre négatif
     for (int y = 0; y < img->height; y++) {
         for (int x = 0; x < img->width; x++) {
             img->data[y][x].red = 255 - img->data[y][x].red;
@@ -161,7 +165,7 @@ void bmp24_grayscale(t_bmp24 *img) {
     }
 }
 
-void bmp24_brightness(t_bmp24 *img, int value) {
+void bmp24_brightness(t_bmp24 *img, int value) { // Fonction pour modifier la luminosité de l'image flowers_color
     for (int y = 0; y < img->height; y++) {
         for (int x = 0; x < img->width; x++) {
             int r = img->data[y][x].red + value;
@@ -206,7 +210,7 @@ static float kernel_sharpen[3][3] = {
     { 0, -1,  0}
 };
 
-t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernelSize) {
+t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernelSize) { // Cette fonction sert à retourner le nouveau pixel résultant de l’application du filtre
     int n = kernelSize / 2;
     float r = 0, g = 0, b = 0;
 
@@ -232,7 +236,7 @@ t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernel
     return result;
 }
 
-static void apply_filter(t_bmp24 *img, float kernel[3][3]) {
+static void apply_filter(t_bmp24 *img, float kernel[3][3]) { // Cette fonction applique un filtre de convolution à toute l’image de 24 bits
     int w = img->width;
     int h = img->height;
     t_pixel **newData = malloc(h * sizeof(t_pixel*));
@@ -267,7 +271,7 @@ void bmp24_emboss(t_bmp24 *img)     { apply_filter(img, kernel_emboss); }
 void bmp24_sharpen(t_bmp24 *img)    { apply_filter(img, kernel_sharpen); }
 
 
-void bmp24_equalizeColor(t_bmp24 *img) {
+void bmp24_equalizeColor(t_bmp24 *img) { //Fonction pour égaliser l'image flowers_color
     int w = img->width;
     int h = img->height;
     int size = w * h;
