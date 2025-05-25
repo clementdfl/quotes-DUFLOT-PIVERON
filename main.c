@@ -104,11 +104,11 @@ void menu_bmp24() {
                 printf("Chemin de l'image : ");
                 scanf("%s", chemin);
                 img = bmp24_loadImage(chemin);
-                if (img) printf("Image chargée avec succes.\n");
+                if (img) printf("Image chargee avec succes.\n");
                 break;
             case 2:
                 if (img) {
-                    printf("Nom du fichier : ");
+                    printf("Chemin du fichier : ");
                     scanf("%s", chemin);
                     bmp24_saveImage(img, chemin);
                     printf("Image sauvegardee.\n");
@@ -139,7 +139,7 @@ void menu_bmp24() {
                 printf("2. Gaussian Blur\n");
                 printf("3. Contours (Outline)\n");
                 printf("4. Relief (Emboss)\n");
-                printf("5. Netteté (Sharpen)\n");
+                printf("5. Nettete (Sharpen)\n");
                 printf(">>> Choix du filtre : ");
                 scanf("%d", &filtre);
 
