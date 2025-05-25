@@ -41,7 +41,8 @@ void menu_bmp8() {
         printf("3. Appliquer filtre négatif\n");
         printf("4. Modifier luminosite\n");
         printf("5. Afficher infos\n");
-        printf("6. Retour\n");
+        printf("6. Égalisation d'histogramme\n");
+        printf("7. Retour\n");
         printf(">>> Votre choix : ");
         scanf("%d", &choix);
 
@@ -76,8 +77,18 @@ void menu_bmp8() {
                 if (img) bmp8_printInfo(img);
                 else printf("Aucune image chargee.\n");
                 break;
+
+            case 6:
+                if (img) {
+                    bmp8_equalize(img);
+                    printf("Égalisation d’histogramme effectuée.\n");
+                } else {
+                    printf("Aucune image chargée.\n");
+                }
+            break;
+
         }
-    } while (choix != 6);
+    } while (choix != 7);
 
     if (img) bmp8_free(img);
 }
