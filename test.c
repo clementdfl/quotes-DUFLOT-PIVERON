@@ -430,7 +430,7 @@ void print_histogram_sample(unsigned int * hist, const char * title) {
 /**
  * @brief Fonction principale pour démonstration
  */
-int main() {
+/*int main() {
     printf("===========================================\n");
     printf("  ÉGALISATION D'HISTOGRAMME - PARTIE 3\n");
     printf("===========================================\n\n");
@@ -457,4 +457,4 @@ int main() {
     printf("Programme terminé.\n");
     
     return 0;
-}
+}*/
