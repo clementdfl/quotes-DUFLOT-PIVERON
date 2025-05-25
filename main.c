@@ -60,7 +60,7 @@ void menu_bmp8() {
             break;
             case 2:
                 if (img) {
-                    printf("Nom du fichier : ");
+                    printf("Mettez un chemin : ");
                     scanf("%s", chemin);
                     bmp8_saveImage(chemin, img);
                     printf("Image sauvegardée.\n");
