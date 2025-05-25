@@ -155,7 +155,7 @@ void menu_bmp24() {
                 break;
 
         }
-    } while (choix != 8);
+    } while (choix != 7);
 
     if (img) bmp24_free(img);
 }
