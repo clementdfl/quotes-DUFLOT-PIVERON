@@ -1,10 +1,14 @@
+//Ce fichier bmp8.c contient l’implémentation des fonctions pour manipuler une image BMP en niveaux de gris (8 bits). Il complète les déclarations présentes dans bmp8.h.
+// Ce fichier a été crée par Lucas Piveron
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include "bmp8.h"
 
-t_bmp8 *bmp8_loadImage(const char *filename) {
+t_bmp8 *bmp8_loadImage(const char *filename) { //Fonction pour charger une image
     FILE *file = fopen(filename, "rb");
     if (!file) {
         perror("Erreur d'ouverture du fichier");
@@ -38,7 +42,7 @@ t_bmp8 *bmp8_loadImage(const char *filename) {
     img->dataSize = *(unsigned int *)&img->header[34];
 
     if (img->colorDepth != 8) {
-        printf("Image non 8 bits !\n");
+        printf("Image non 8 bits !\n"); // On regarde si l'image chargée est une image sur 8 bits
         free(img);
         fclose(file);
         return NULL;
@@ -46,7 +50,7 @@ t_bmp8 *bmp8_loadImage(const char *filename) {
 
     // Si dataSize est 0, le calculer (parfois c'est le cas)
     if (img->dataSize == 0) {
-        int rowSize = ((img->width + 3) / 4) * 4; // lignes alignées sur 4 octets
+        int rowSize = ((img->width + 3) / 4) * 4;
         img->dataSize = rowSize * img->height;
     }
 
@@ -69,7 +73,7 @@ t_bmp8 *bmp8_loadImage(const char *filename) {
 }
 
 
-void bmp8_saveImage(const char *filename, t_bmp8 *img) {
+void bmp8_saveImage(const char *filename, t_bmp8 *img) { // Fonction pour sauvegarder une image
     FILE *file = fopen(filename, "wb");
     if (!file) {
         perror("Erreur de sauvegarde");
@@ -82,14 +86,14 @@ void bmp8_saveImage(const char *filename, t_bmp8 *img) {
     fclose(file);
 }
 
-void bmp8_free(t_bmp8 *img) {
+void bmp8_free(t_bmp8 *img) { //Fonction pour libérer l'espace alloué à l'image
     if (img) {
         free(img->data);
         free(img);
     }
 }
 
-void bmp8_printInfo(t_bmp8 *img) {
+void bmp8_printInfo(t_bmp8 *img) { //Fonction qui nous donne les informations principales de l'image barbara_gray
     printf("Image Info:\n");
     printf("Width: %u\n", img->width);
     printf("Height: %u\n", img->height);
@@ -97,13 +101,13 @@ void bmp8_printInfo(t_bmp8 *img) {
     printf("Data Size: %u\n", img->dataSize);
 }
 
-void bmp8_negative(t_bmp8 *img) {
+void bmp8_negative(t_bmp8 *img) { // Fonction qui applique le filtre négatif à l'image barbara_gray
     for (unsigned int i = 0; i < img->dataSize; i++) {
         img->data[i] = 255 - img->data[i];
     }
 }
 
-void bmp8_brightness(t_bmp8 *img, int value) {
+void bmp8_brightness(t_bmp8 *img, int value) { // Fonction qui modifie la luminosité entre -255 et 255 pixels de l'image barbara_gray
     for (unsigned int i = 0; i < img->dataSize; i++) {
         int pixel = img->data[i] + value;
 
@@ -148,7 +152,7 @@ unsigned int *bmp8_computeCDF(unsigned int *hist, int totalPixels) {
     return hist_eq;
 }
 
-void bmp8_equalize(t_bmp8 *img) {
+void bmp8_equalize(t_bmp8 *img) { //Fonction pour égaliser l'image barbara_gray
     unsigned int *hist = bmp8_computeHistogram(img);
     unsigned int *hist_eq = bmp8_computeCDF(hist, img->dataSize);
 
