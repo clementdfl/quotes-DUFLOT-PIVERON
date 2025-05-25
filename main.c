@@ -1,3 +1,8 @@
+//Ce fichier main.c contient le point d'entrée principal du projet. Il sert à afficher le menu principal, permettre à l'utilisateur de choisir entre 2 image de bits différents. Enfin, à travers le menu principal, il affiche les menus bmp8 et bmp24 là où on peut modifier l'image comme on le souhaite.
+// Ce fichier a été crée par Clément Duflot
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "bmp8.h"
@@ -7,7 +12,7 @@
 void menu_bmp8();
 void menu_bmp24();
 
-int main() {
+int main() { // Le main permet de créer le menu principal qui est à la base de tout.
     int choix;
 
     do {
@@ -29,7 +34,7 @@ int main() {
     return 0;
 }
 
-void menu_bmp8() {
+void menu_bmp8() { // Cette fonction affiche le menu_bmp8 avec toutes les options que l'on peut faire sur l'image barbara_gray
     t_bmp8 *img = NULL;
     int choix, val, seuil;
     char chemin[256];
@@ -93,7 +98,7 @@ void menu_bmp8() {
     if (img) bmp8_free(img);
 }
 
-void menu_bmp24() {
+void menu_bmp24() { //Cette fonction affiche le menu_bmp24 avec toutes les options que l'on peut faire sur l'image flowers_color
     t_bmp24 *img = NULL;
     int choix, val, filtre;
     char chemin[256];
