@@ -106,7 +106,8 @@ void menu_bmp24() {
         printf("4. Convertir en niveaux de gris\n");
         printf("5. Modifier luminosite\n");
         printf("6. Filtres de convolution\n");
-        printf("7. Retour\n");
+        printf("7. Egalisation d'histogramme \n");
+        printf("8. Retour\n");
         printf(">>> Votre choix : ");
         scanf("%d", &choix);
 
@@ -165,8 +166,18 @@ void menu_bmp24() {
                 printf("Filtre appliqué.\n");
                 break;
 
+            case 7:
+                if (img) {
+                    bmp24_equalizeColor(img);
+                    printf("Egalisation d'histogramme effectuee.\n");
+                } else {
+                    printf("Aucune image chargee.\n");
+                }
+            break;
+
+
         }
-    } while (choix != 7);
+    } while (choix != 8);
 
     if (img) bmp24_free(img);
 }

@@ -266,3 +266,75 @@ void bmp24_outline(t_bmp24 *img)    { apply_filter(img, kernel_outline); }
 void bmp24_emboss(t_bmp24 *img)     { apply_filter(img, kernel_emboss); }
 void bmp24_sharpen(t_bmp24 *img)    { apply_filter(img, kernel_sharpen); }
 
+
+void bmp24_equalizeColor(t_bmp24 *img) {
+    int w = img->width;
+    int h = img->height;
+    int size = w * h;
+
+    float *Y = malloc(size * sizeof(float));
+    float *U = malloc(size * sizeof(float));
+    float *V = malloc(size * sizeof(float));
+    unsigned int hist[256] = {0};
+
+    // Étape 1 : Conversion RGB → YUV + histogramme de Y
+    int idx = 0;
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            t_pixel p = img->data[y][x];
+
+            float y_val = 0.299 * p.red + 0.587 * p.green + 0.114 * p.blue;
+            float u = -0.14713 * p.red - 0.28886 * p.green + 0.436 * p.blue;
+            float v =  0.615 * p.red - 0.51499 * p.green - 0.10001 * p.blue;
+
+            Y[idx] = y_val;
+            U[idx] = u;
+            V[idx] = v;
+            hist[(int)y_val]++;
+            idx++;
+        }
+    }
+
+    // Étape 2 : CDF + égalisation
+    unsigned int cdf[256] = {0}, hist_eq[256] = {0};
+    cdf[0] = hist[0];
+    for (int i = 1; i < 256; i++) {
+        cdf[i] = cdf[i-1] + hist[i];
+    }
+
+    int cdfmin = 0;
+    for (int i = 0; i < 256; i++) {
+        if (cdf[i] != 0) {
+            cdfmin = cdf[i];
+            break;
+        }
+    }
+
+    for (int i = 0; i < 256; i++) {
+        hist_eq[i] = round(((float)(cdf[i] - cdfmin) / (size - cdfmin)) * 255);
+    }
+
+    // Étape 3 : nouvelle luminance Y -> RGB
+    idx = 0;
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            float y_new = hist_eq[(int)Y[idx]];
+            float u = U[idx];
+            float v = V[idx];
+
+            float r = y_new + 1.13983 * v;
+            float g = y_new - 0.39465 * u - 0.58060 * v;
+            float b = y_new + 2.03211 * u;
+
+            img->data[y][x].red = fmin(fmax(round(r), 0), 255);
+            img->data[y][x].green = fmin(fmax(round(g), 0), 255);
+            img->data[y][x].blue = fmin(fmax(round(b), 0), 255);
+
+            idx++;
+        }
+    }
+
+    free(Y);
+    free(U);
+    free(V);
+}
