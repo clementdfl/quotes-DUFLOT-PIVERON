@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+
+
 typedef struct {
     uint16_t type;
     uint32_t size;
@@ -54,5 +56,17 @@ void bmp24_saveImage(t_bmp24 * img, const char * filename);
 void bmp24_negative(t_bmp24 * img);
 void bmp24_grayscale(t_bmp24 * img);
 void bmp24_brightness(t_bmp24 * img, int value);
+
+// Convolution
+t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernelSize);
+void bmp24_boxBlur(t_bmp24 *img);
+void bmp24_gaussianBlur(t_bmp24 *img);
+void bmp24_outline(t_bmp24 *img);
+void bmp24_emboss(t_bmp24 *img);
+void bmp24_sharpen(t_bmp24 *img);
+
+
+
+
 
 #endif
