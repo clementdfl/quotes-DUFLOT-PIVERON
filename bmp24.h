@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 
-
+#pragma pack(push, 1)
 typedef struct {
     uint16_t type;
     uint32_t size;
@@ -13,6 +13,7 @@ typedef struct {
     uint32_t offset;
 } t_bmp_header;
 
+#pragma pack(push, 1)
 typedef struct {
     uint32_t size;
     int32_t width;

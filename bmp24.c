@@ -18,7 +18,9 @@ t_bmp24 *bmp24_loadImage(const char *filename) {
 
     t_bmp_info header_info;
     fread(&header_info, sizeof(t_bmp_info), 1, file);
+
     // Vérifier profondeur
+
     if (header_info.bits != 24) {
         printf("Erreur : image non 24 bits !\n");
         fclose(file);
